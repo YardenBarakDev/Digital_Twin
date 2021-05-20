@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Digital Twin</string>
+
+    <string-array name="Roles">
+        <item>CLIENT</item>
+        <item>PROJECT MANAGER</item>
+        <item>ADMIN</item>
+    </string-array>
+
+    <string-array name="Sort">
+        <item>By start date</item>
+        <item>By progress</item>
+        <item>By status</item>
+    </string-array>
+</resources>

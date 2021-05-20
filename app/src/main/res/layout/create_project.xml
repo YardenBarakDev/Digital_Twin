@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create project"
+        android:textSize="25sp"
+        android:layout_marginBottom="25dp"
+        android:textStyle="italic|bold"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/Project_ET_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginBottom="15sp"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/Project_LBL_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Project name"
+            android:inputType="text"
+            android:maxLines="1"
+            android:maxLength="35"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/Project_ET_budget"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginBottom="15sp"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/Project_LBL_budget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Project budget"
+            android:inputType="numberDecimal"
+            android:maxLines="1"
+            android:maxLength="35"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/Project_ET_startDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginBottom="15sp"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/Register_LBL_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Start date"
+            android:inputType="date"
+            android:maxLines="1"
+            android:maxLength="35"
+
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/Project_ET_endDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginBottom="15sp"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/Project_LBL_endDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="End date"
+            android:inputType="date"
+            android:maxLines="1"
+            android:maxLength="35"
+
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/Project_ET_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginBottom="15sp"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/Register_LBL_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Location"
+            android:inputType="text"
+            android:maxLines="1"
+            android:maxLength="35"
+
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/Register_BTN_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create Project"
+        />
+
+
+
+
+
+
+
+
+</LinearLayout>
