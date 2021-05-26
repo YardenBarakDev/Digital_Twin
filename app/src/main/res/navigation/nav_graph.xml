@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/login">
+
+    <fragment
+        android:id="@+id/createRoom"
+        android:name="com.ybdev.digitaltwin.fragments.CreateRoom"
+        android:label="fragment_create_room"
+        tools:layout="@layout/fragment_create_room" />
+    <fragment
+        android:id="@+id/buildingList"
+        android:name="com.ybdev.digitaltwin.fragments.BuildingList"
+        android:label="BuildingList" >
+        <action
+            android:id="@+id/action_buildingList_to_createBuilding"
+            app:destination="@id/createBuilding" />
+        <action
+            android:id="@+id/action_buildingList_to_apartmentList"
+            app:destination="@id/apartmentList" />
+    </fragment>
+    <fragment
+        android:id="@+id/createProject"
+        android:name="com.ybdev.digitaltwin.fragments.CreateProject"
+        android:label="CreateProject" />
+    <fragment
+        android:id="@+id/apartmentList"
+        android:name="com.ybdev.digitaltwin.fragments.ApartmentList"
+        android:label="fragment_apartment_list"
+        tools:layout="@layout/fragment_apartment_list" >
+        <action
+            android:id="@+id/action_apartmentList_to_createApartment"
+            app:destination="@id/createApartment" />
+        <action
+            android:id="@+id/action_apartmentList_to_createFacility"
+            app:destination="@id/createFacility" />
+    </fragment>
+    <fragment
+        android:id="@+id/createBuilding"
+        android:name="com.ybdev.digitaltwin.fragments.CreateBuilding"
+        android:label="CreateBuilding" />
+    <fragment
+        android:id="@+id/projectList"
+        android:name="com.ybdev.digitaltwin.fragments.ProjectList"
+        android:label="ProjectList" >
+        <action
+            android:id="@+id/action_projectList_to_createProject"
+            app:destination="@id/createProject" />
+        <action
+            android:id="@+id/action_projectList_to_buildingList"
+            app:destination="@id/buildingList" />
+    </fragment>
+    <fragment
+        android:id="@+id/createApartment"
+        android:name="com.ybdev.digitaltwin.fragments.CreateApartment"
+        android:label="fragment_create_apartment"
+        tools:layout="@layout/fragment_create_apartment" />
+    <fragment
+        android:id="@+id/createFacility"
+        android:name="com.ybdev.digitaltwin.fragments.CreateFacility"
+        android:label="fragment_create_facility"
+        tools:layout="@layout/fragment_create_facility" />
+    <fragment
+        android:id="@+id/login"
+        android:name="com.ybdev.digitaltwin.fragments.Login"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_login_to_register"
+            app:destination="@id/register" />
+        <action
+            android:id="@+id/action_login_to_projectList"
+            app:destination="@id/projectList" />
+    </fragment>
+    <fragment
+        android:id="@+id/register"
+        android:name="com.ybdev.digitaltwin.fragments.Register"
+        android:label="Register" />
+</navigation>

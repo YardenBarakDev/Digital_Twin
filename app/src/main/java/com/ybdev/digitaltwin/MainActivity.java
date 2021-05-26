@@ -1,9 +1,12 @@
 package com.ybdev.digitaltwin;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.fragment.NavHostFragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -36,11 +39,19 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "jjjj";
     private TextView SignIn_LBL_createAccount;
+
+    private NavHostFragment navHostFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        SignIn_LBL_createAccount = findViewById(R.id.SignIn_LBL_createAccount);
+
+
+        navHostFragment = (NavHostFragment)getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+
+/*
+
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -50,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         }).start();
 
 
-
+*/
     }
 
     private void postInfoToDb(){
