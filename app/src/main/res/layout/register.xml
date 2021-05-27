@@ -68,7 +68,7 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/asdad"
+        android:id="@+id/Register_LBL_role"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="25dp"
@@ -79,10 +79,10 @@
         >
 
         <AutoCompleteTextView
+            android:id="@+id/Register_LBL_roles"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="none"
-
             />
 
     </com.google.android.material.textfield.TextInputLayout>

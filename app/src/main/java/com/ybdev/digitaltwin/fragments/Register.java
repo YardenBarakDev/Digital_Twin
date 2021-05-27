@@ -3,64 +3,81 @@ package com.ybdev.digitaltwin.fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Toast;
 
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.ybdev.digitaltwin.R;
+import com.ybdev.digitaltwin.items.objects.User;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link Register#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class Register extends Fragment {
+    private static final String TAG = "Register";
+    private View view;
+    private TextInputEditText Register_LBL_username;
+    private TextInputEditText Register_LBL_email;
+    private AutoCompleteTextView Register_LBL_role;
+    private TextInputEditText Register_LBL_password;
+    private MaterialButton    Register_BTN_register;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String[] ROLES = new String[] {
+            "Owner" , "User"
+    };
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public Register() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Register.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static Register newInstance(String param1, String param2) {
-        Register fragment = new Register();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.register, container, false);
+        if(view == null){
+            view = inflater.inflate(R.layout.register, container, false);
+        }
+        findViews(view);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.list_item, ROLES);
+        Register_LBL_role.setAdapter(adapter);
+
+
+        Register_BTN_register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    User user = new User();
+                    user.setUserName(Register_LBL_username.getText().toString());
+                    user.setEmail(Register_LBL_email.getText().toString());
+                    user.setPassword(Register_LBL_password.getText().toString());
+                    user.setRole(Register_LBL_role.getText().toString());
+
+                    postUser(user); // TODO : add method to post user
+
+                    NavHostFragment.findNavController(Register.this).navigate(R.id.action_register_to_projectList);
+
+                }catch (Exception e){
+                    Log.d(TAG, "onClick: "+ e.getMessage());
+                    Toast.makeText(getContext(), "Please enter correct building", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        return view;
+    }
+
+    private void postUser(User user) {
+    }
+
+    private void findViews(View view) {
+        Register_LBL_username = view.findViewById(R.id.Register_LBL_username);
+        Register_LBL_email = view.findViewById(R.id.Register_LBL_email);
+        Register_LBL_role = view.findViewById(R.id.Register_LBL_roles);
+        Register_LBL_password = view.findViewById(R.id.Register_LBL_password);
+        Register_BTN_register = view.findViewById(R.id.Register_BTN_register);
+
     }
 }

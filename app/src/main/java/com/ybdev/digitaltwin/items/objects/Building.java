@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class Building {
 	private String ID;
+	private String Name;
 	private ArrayList<Facility> facilities;
 	private boolean isReady;
 	private ArrayList<Apartment> apartments;
@@ -14,10 +15,11 @@ public class Building {
 		// Empty constructor
 	}
 
-	public Building(String iD, ArrayList<Facility> facilities, boolean isReady, ArrayList<Apartment> apartments,
-			int floor, int numOfWorkers) {
+	public Building(String iD, String name, ArrayList<Facility> facilities, boolean isReady, ArrayList<Apartment> apartments,
+					int floor, int numOfWorkers) {
 		super();
 		ID = iD;
+		this.Name = name;
 		this.facilities = facilities;
 		this.isReady = isReady;
 		this.apartments = apartments;
@@ -75,8 +77,15 @@ public class Building {
 
 	@Override
 	public String toString() {
-		return "Building [ID=" + ID + ", facilities=" + facilities + ", isReady=" + isReady + ", apartments="
+		return "Building [ID=" + ID + ",name ="+Name+", facilities=" + facilities + ", isReady=" + isReady + ", apartments="
 				+ apartments + ", floor=" + floor + ", numOfWorkers=" + numOfWorkers + "]";
 	}
 
+	public String getName() {
+		return Name;
+	}
+
+	public void setName(String name) {
+		Name = name;
+	}
 }

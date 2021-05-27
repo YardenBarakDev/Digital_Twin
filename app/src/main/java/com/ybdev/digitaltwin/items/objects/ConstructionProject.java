@@ -72,10 +72,11 @@ public class ConstructionProject {
 		this.buildings = buildings;
 	}
 
-	public ConstructionProject(String id, Double lat, Double lon, Double budget, String startDate, String dueDate,
+	public ConstructionProject(String id,String name, Double lat, Double lon, Double budget, String startDate, String dueDate,
 			ArrayList<Building> buildings) {
 		super();
 		this.id = id;
+		this.name = name;
 		this.lat = lat;
 		this.lon = lon;
 		this.budget = budget;
@@ -86,7 +87,7 @@ public class ConstructionProject {
 
 	@Override
 	public String toString() {
-		return "ConstructionProject [id=" + id + ", lat=" + lat + ", lon=" + lon + ", budget=" + budget + ", startDate="
+		return "ConstructionProject [id=" + id + ", name= "+name+", lat=" + lat + ", lon=" + lon + ", budget=" + budget + ", startDate="
 				+ startDate + ", dueDate=" + dueDate + ", buildings=" + buildings + "]";
 	}
 

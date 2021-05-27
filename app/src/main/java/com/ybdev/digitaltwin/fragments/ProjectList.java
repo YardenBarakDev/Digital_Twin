@@ -51,10 +51,10 @@ private RecyclerView project_RecyclerView;
     }
 
     private void getProjectData(ArrayList<ConstructionProject> allProject) {
-        allProject.add(new ConstructionProject("0",3.12,3.16, 30000000.0, "12/12/2021", "12/12/2022",
+        allProject.add(new ConstructionProject("0","nathan",3.12,3.16, 30000000.0, "12/12/2021", "12/12/2022",
                 null));
 
-        allProject.add(new ConstructionProject("0",3.12,3.16, 30000000.0, "12/12/2021", "12/12/2022",
+        allProject.add(new ConstructionProject("0","amiel",3.12,3.16, 30000000.0, "12/12/2021", "12/12/2022",
                 null));
     }
 

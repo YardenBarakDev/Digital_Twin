@@ -56,7 +56,7 @@ public class CreateProject extends Fragment {
                     NavHostFragment.findNavController(CreateProject.this).navigate(R.id.action_createProject_to_projectList);
                 }catch (Exception e){
                     Log.d(TAG, "onClick: "+ e.getMessage());
-                    Toast.makeText(getContext(), "Please enter correct porject", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Please enter correct project", Toast.LENGTH_SHORT).show();
                 }
 
                 Log.d("CreateProject", "onClick: "+c.toString());
