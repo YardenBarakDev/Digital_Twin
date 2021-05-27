@@ -26,7 +26,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/Building_RecyclerView"
+        android:id="@+id/project_RecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
 
@@ -37,7 +37,7 @@
         app:layout_constraintTop_toBottomOf="@+id/RunFragment_Spinner" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/Building_FAB_create_new_building"
+        android:id="@+id/project_FAB_create_new_building"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_add"

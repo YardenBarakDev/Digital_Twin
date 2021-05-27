@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class ConstructionProject {
 	private String id;
+	private String name;
 	private Double lat;
 	private Double lon;
 	private Double budget;
@@ -89,4 +90,11 @@ public class ConstructionProject {
 				+ startDate + ", dueDate=" + dueDate + ", buildings=" + buildings + "]";
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 }

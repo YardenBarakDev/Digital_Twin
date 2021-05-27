@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:gravity="center">
 
@@ -70,7 +71,7 @@
         >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/Register_LBL_email"
+            android:id="@+id/Project_LBL_startDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Start date"
@@ -113,10 +114,11 @@
         android:layout_marginEnd="25dp"
         android:layout_marginStart="25dp"
         android:layout_marginBottom="15sp"
+        app:helperText="lon , lat "
         >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/Register_LBL_location"
+            android:id="@+id/Project_LBL_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Location"
@@ -129,7 +131,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/Register_BTN_register"
+        android:id="@+id/Project_BTN_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Create Project"

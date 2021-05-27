@@ -6,9 +6,9 @@
 
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/country_LAY_crd"
+        android:id="@+id/project_LAY_crd"
         android:layout_width="match_parent"
-        android:layout_height="130dp"
+        android:layout_height="135dp"
         android:layout_alignParentTop="true"
         android:clickable="true"
         android:foreground="?attr/selectableItemBackground"
@@ -63,8 +63,16 @@
                     android:id="@+id/country_LAY_nativeP"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
                     android:orientation="vertical">
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/project_LBL_name1"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:text="israeli"
+                        android:textSize="18sp"
+                        app:autoSizeStepGranularity="1sp"
+                        app:autoSizeTextType="uniform" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/project_LBL_name2"
@@ -78,6 +86,16 @@
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/project_LBL_name3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:text="data"
+                        android:textSize="18sp"
+                        app:autoSizeStepGranularity="1sp"
+                        app:autoSizeTextType="uniform" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/project_LBL_name4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:maxLines="1"
