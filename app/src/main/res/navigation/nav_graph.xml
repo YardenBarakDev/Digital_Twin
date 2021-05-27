@@ -24,7 +24,11 @@
     <fragment
         android:id="@+id/createProject"
         android:name="com.ybdev.digitaltwin.fragments.CreateProject"
-        android:label="CreateProject" />
+        android:label="CreateProject" >
+        <action
+            android:id="@+id/action_createProject_to_projectList"
+            app:destination="@id/projectList" />
+    </fragment>
     <fragment
         android:id="@+id/apartmentList"
         android:name="com.ybdev.digitaltwin.fragments.ApartmentList"
@@ -40,7 +44,11 @@
     <fragment
         android:id="@+id/createBuilding"
         android:name="com.ybdev.digitaltwin.fragments.CreateBuilding"
-        android:label="CreateBuilding" />
+        android:label="CreateBuilding" >
+        <action
+            android:id="@+id/action_createBuilding_to_buildingList"
+            app:destination="@id/buildingList" />
+    </fragment>
     <fragment
         android:id="@+id/projectList"
         android:name="com.ybdev.digitaltwin.fragments.ProjectList"
@@ -56,12 +64,20 @@
         android:id="@+id/createApartment"
         android:name="com.ybdev.digitaltwin.fragments.CreateApartment"
         android:label="fragment_create_apartment"
-        tools:layout="@layout/fragment_create_apartment" />
+        tools:layout="@layout/fragment_create_apartment" >
+        <action
+            android:id="@+id/action_createApartment_to_apartmentList"
+            app:destination="@id/apartmentList" />
+    </fragment>
     <fragment
         android:id="@+id/createFacility"
         android:name="com.ybdev.digitaltwin.fragments.CreateFacility"
         android:label="fragment_create_facility"
-        tools:layout="@layout/fragment_create_facility" />
+        tools:layout="@layout/fragment_create_facility" >
+        <action
+            android:id="@+id/action_createFacility_to_apartmentList"
+            app:destination="@id/apartmentList" />
+    </fragment>
     <fragment
         android:id="@+id/login"
         android:name="com.ybdev.digitaltwin.fragments.Login"
@@ -77,5 +93,9 @@
     <fragment
         android:id="@+id/register"
         android:name="com.ybdev.digitaltwin.fragments.Register"
-        android:label="Register" />
+        android:label="Register" >
+        <action
+            android:id="@+id/action_register_to_projectList"
+            app:destination="@id/projectList" />
+    </fragment>
 </navigation>
