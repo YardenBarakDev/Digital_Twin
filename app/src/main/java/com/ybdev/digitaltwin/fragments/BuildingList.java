@@ -3,64 +3,64 @@ package com.ybdev.digitaltwin.fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Spinner;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.ybdev.digitaltwin.Adapter.BuildingAdapter;
+import com.ybdev.digitaltwin.Adapter.ProjectAdapter;
 import com.ybdev.digitaltwin.R;
+import com.ybdev.digitaltwin.items.objects.Building;
+import com.ybdev.digitaltwin.items.objects.ConstructionProject;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link BuildingList#newInstance} factory method to
- * create an instance of this fragment.
- */
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+
 public class BuildingList extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public BuildingList() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment BuildingList.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static BuildingList newInstance(String param1, String param2) {
-        BuildingList fragment = new BuildingList();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    protected View view;
+    private Spinner Building_Spinner;
+    private RecyclerView Building_RecyclerView;
+    private FloatingActionButton Building_FAB_create_new_building;
+    ArrayList<Building> allBuildings;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if(view == null){// Inflate the layout for this fragment
+            view = inflater.inflate(R.layout.building_list, container, false);
         }
+        allBuildings = new ArrayList<>();
+        findViews();
+
+        // click listener. create new building
+        Building_FAB_create_new_building.setOnClickListener(view -> {
+
+            //change fragment to  create building
+            NavHostFragment.findNavController(BuildingList.this).navigate(R.id.action_buildingList_to_createBuilding);
+        });
+
+
+        return view;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.building_list, container, false);
+    // TODO : call this method when after the api call
+    private void setAdapter() {
+        BuildingAdapter buildingAdapter = new BuildingAdapter(getContext() , allBuildings);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        Building_RecyclerView.setLayoutManager(linearLayoutManager);
+        Building_RecyclerView.setAdapter(buildingAdapter);
+    }
+
+    private void findViews() {
+        Building_Spinner = view.findViewById(R.id.Building_Spinner);
+        Building_RecyclerView = view.findViewById(R.id.Building_RecyclerView);
+        Building_FAB_create_new_building = view.findViewById(R.id.Building_FAB_create_new_building);
     }
 }

@@ -1,14 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.CreateApartment">
+    android:orientation="vertical"
+    android:gravity="center">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create Apartment"
+        android:textSize="25sp"
+        android:layout_marginBottom="25dp"
+        android:textStyle="italic|bold"
+        />
 
-</FrameLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/Apartment_ET_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginBottom="15sp"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/Apartment_LBL_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Apartment id"
+            android:inputType="text"
+            android:maxLines="1"
+            android:maxLength="35"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/Apartment_ET_balcony"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginBottom="15sp"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/Apartment_LBL_balcony"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Have balcony?"
+            android:inputType="text"
+            android:maxLines="1"
+            android:maxLength="35"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/Apartment_ET_showers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginBottom="15sp"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/Apartment_LBL_showers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Number of showers"
+            android:inputType="number"
+            android:maxLines="1"
+            android:maxLength="3"
+
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/Apartment_ET_rooms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginBottom="15sp"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/Apartment_LBL_rooms"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Number of rooms"
+            android:inputType="number"
+            android:maxLines="1"
+            android:maxLength="3"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/Apartment_BTN_createApartment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create Apartment"
+        />
+
+
+
+
+
+
+
+
+</LinearLayout>

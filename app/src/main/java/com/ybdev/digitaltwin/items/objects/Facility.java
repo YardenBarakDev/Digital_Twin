@@ -3,6 +3,8 @@ package com.ybdev.digitaltwin.items.objects;
 public class Facility {
 	private String ID;
 	private boolean isReady;
+	private String type;
+
 
 	public Facility() {
 		// Empty constructor
@@ -30,10 +32,20 @@ public class Facility {
 		this.isReady = isReady;
 	}
 
-	@Override
-	public String toString() {
-		return "Facility [ID=" + ID + ", isReady=" + isReady + "]";
+	public String getType() {
+		return type;
 	}
 
-	
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	@Override
+	public String toString() {
+		return "Facility{" +
+				"ID='" + ID + '\'' +
+				", isReady=" + isReady +
+				", type='" + type + '\'' +
+				'}';
+	}
 }
