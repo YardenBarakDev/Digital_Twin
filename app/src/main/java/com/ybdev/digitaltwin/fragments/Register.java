@@ -19,6 +19,15 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.ybdev.digitaltwin.R;
 import com.ybdev.digitaltwin.items.objects.User;
 
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class Register extends Fragment {
     private static final String TAG = "Register";
     private View view;
@@ -29,7 +38,7 @@ public class Register extends Fragment {
     private MaterialButton    Register_BTN_register;
 
     private static final String[] ROLES = new String[] {
-            "Owner" , "User"
+            "PLAYER", "MANAGER", "ADMIN"
     };
 
 
@@ -70,6 +79,45 @@ public class Register extends Fragment {
     }
 
     private void postUser(User user) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                postInfoToDb(user);
+            }
+        }).start();
+    }
+
+    private void postInfoToDb(User user){
+        String url = "http://192.168.1.202:8042/twins/users";
+
+        OkHttpClient okHttpClient = new OkHttpClient();
+
+
+        String json = "{" +
+            "\"email\": " +"\""+ user.getEmail()+ "\" , "+
+            "\"role\":" + "\""+user.getRole().toUpperCase()+"\" , "+
+            "\"username\":" + "\""+user.getUserName()+"\" , "+
+            "\"avatar\":" +"\""+ ""+"\""+
+                "}" ;
+
+        Log.d(TAG, "postInfoToDb: "+json);
+
+        RequestBody body = RequestBody.create(
+                MediaType.parse("application/json"), json);
+
+        Request request2 = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+
+        Call call = okHttpClient.newCall(request2);
+        try {
+            Response response = call.execute();
+            Log.d(TAG, "postInfoToDb: "+response.code());
+        } catch (IOException e) {
+            Log.d(TAG, "postInfoToDb: "+e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void findViews(View view) {

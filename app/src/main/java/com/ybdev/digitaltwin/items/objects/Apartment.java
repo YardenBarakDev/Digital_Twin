@@ -2,7 +2,7 @@ package com.ybdev.digitaltwin.items.objects;
 
 public class Apartment {
 
-	enum apartmentOrientation {
+	public enum apartmentOrientation {
 		EAST, WEST, NORTH, SOUTH
 	}
 

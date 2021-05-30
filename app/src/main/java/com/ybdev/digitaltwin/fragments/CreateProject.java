@@ -52,7 +52,6 @@ public class CreateProject extends Fragment {
 
                     postToDataBase(c); // TODO : add method post to server
 
-
                     NavHostFragment.findNavController(CreateProject.this).navigate(R.id.action_createProject_to_projectList);
                 }catch (Exception e){
                     Log.d(TAG, "onClick: "+ e.getMessage());

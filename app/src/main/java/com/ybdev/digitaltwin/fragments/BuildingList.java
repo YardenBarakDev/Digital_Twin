@@ -37,6 +37,8 @@ public class BuildingList extends Fragment {
             view = inflater.inflate(R.layout.building_list, container, false);
         }
         allBuildings = new ArrayList<>();
+        allBuildings.add(new Building());
+
         findViews();
 
         // click listener. create new building
