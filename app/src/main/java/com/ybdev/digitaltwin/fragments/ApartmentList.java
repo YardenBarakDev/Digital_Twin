@@ -115,7 +115,6 @@ public class ApartmentList extends Fragment {
 
     }
 
-    // TODO : call this method when after the api call
     private void setAdapter() {
 
         ApartmentAdapter apartmentAdapter = new ApartmentAdapter(getContext() , allApartments);

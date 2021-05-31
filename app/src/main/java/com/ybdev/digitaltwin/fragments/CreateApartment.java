@@ -14,17 +14,11 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.ybdev.digitaltwin.R;
 import com.ybdev.digitaltwin.items.objects.Apartment;
-import com.ybdev.digitaltwin.items.objects.Room;
-
-import org.jetbrains.annotations.NotNull;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Random;
 
 import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -36,8 +30,8 @@ public class CreateApartment extends Fragment {
     private static final String TAG = "CreateApartment";
     protected View view;
     private TextInputEditText Apartment_LBL_name;
-    private TextInputEditText Apartment_LBL_balcony;
-    private TextInputEditText Apartment_LBL_showers;
+    private TextInputEditText Apartment_LBL_price;
+    private TextInputEditText Apartment_LBL_oriantation;
     private TextInputEditText Apartment_LBL_rooms;
     private MaterialButton Apartment_BTN_createApartment;
 
@@ -53,9 +47,11 @@ public class CreateApartment extends Fragment {
 
         // listener. create new room
         Apartment_BTN_createApartment.setOnClickListener(view -> {
-            Apartment apartment = new Apartment();
-            // TODO : continue apartment build according to input from the api
-            createApartment();
+            Apartment apartment = new Apartment(Apartment_LBL_name.getText().toString(), false, 0.0 +  Math.random() * 3 + 1 % 3, 0.0 +  Math.random() * 3 + 1 % 3, 0.0 +  Math.random() * 3 + 1 % 3,
+                    Integer.parseInt(Apartment_LBL_rooms.getText().toString()), Double.parseDouble(Apartment_LBL_price.getText().toString()), 2, 2, true, true,
+                    Apartment.apartmentOrientation.EAST, true, false, false);
+
+            createApartment(apartment);
         });
 
 
@@ -64,18 +60,11 @@ public class CreateApartment extends Fragment {
 
 
     // TODO : once the api is ready
-    private void createApartment() {
+    private void createApartment(Apartment apartment) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-
-        for (int i = 0; i < 10; i++) {
-            Apartment apartment = new Apartment("iD "+i, false, 0.0 + i%3, 0.0 + i%3, 0.0 + i%3,i,
-                    10000.0 + i, 2,2, true, true,
-                    Apartment.apartmentOrientation.EAST, true, false, false);
-                    postAppartement(apartment);
-        }
-
+                postAppartement(apartment);
             }
         }).start();
     }
@@ -84,7 +73,7 @@ public class CreateApartment extends Fragment {
         postInfoToDb(apartment);
     }
 
-    private void postInfoToDb(Apartment apartment){
+    private void postInfoToDb(Apartment apartment) {
         String url = "http://192.168.1.202:8042/twins/items/2021b.vadim.kandorov/dima@notfound.com";
 
         OkHttpClient okHttpClient = new OkHttpClient();
@@ -93,11 +82,11 @@ public class CreateApartment extends Fragment {
 
         String details = gson.toJson(apartment);
 
-        Log.d(TAG, "postInfoToDb: "+details);
+        Log.d(TAG, "postInfoToDb: " + details);
 
         String json = "{\n" +
                 "    \"type\": \"Apartment\",\n" +
-                "    \"name\": \"demo item "+apartment.getID()+" \",\n" +
+                "    \"name\": \"demo item " + apartment.getID() + " \",\n" +
                 "    \"active\": true,\n" +
                 "    \"createdTimestamp\": \"2021-05-20T10:42:23.995+00:00\",\n" +
                 "    \"createdBy\": {\n" +
@@ -110,7 +99,7 @@ public class CreateApartment extends Fragment {
                 "\"lat\":32.115139,\n" +
                 "\"lng\":34.817804\n" +
                 "},\n" +
-                "    \"itemAttributes\":"+details+",\n" +
+                "    \"itemAttributes\":" + details + ",\n" +
                 "    \"itemId\": {\n" +
                 "        \"space\": \"2021b.vadim.kandorov\",\n" +
                 "        \"id\": \"1\"\n" +
@@ -128,9 +117,9 @@ public class CreateApartment extends Fragment {
         Call call = okHttpClient.newCall(request2);
         try {
             Response response = call.execute();
-            Log.d(TAG, "postInfoToDb: "+response.code());
+            Log.d(TAG, "postInfoToDb: " + response.code());
         } catch (IOException e) {
-            Log.d(TAG, "postInfoToDb: "+e.getMessage());
+            Log.d(TAG, "postInfoToDb: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -138,8 +127,8 @@ public class CreateApartment extends Fragment {
 
     private void findViews() {
         Apartment_LBL_name = view.findViewById(R.id.Apartment_LBL_name);
-        Apartment_LBL_balcony = view.findViewById(R.id.Apartment_LBL_balcony);
-        Apartment_LBL_showers = view.findViewById(R.id.Apartment_LBL_showers);
+        Apartment_LBL_price = view.findViewById(R.id.Apartment_LBL_price);
+        Apartment_LBL_oriantation = view.findViewById(R.id.Apartment_LBL_oriantation);
         Apartment_LBL_rooms = view.findViewById(R.id.Apartment_LBL_rooms);
         Apartment_BTN_createApartment = view.findViewById(R.id.Apartment_BTN_createApartment);
     }

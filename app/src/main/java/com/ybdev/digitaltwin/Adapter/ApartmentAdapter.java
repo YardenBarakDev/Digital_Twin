@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.textview.MaterialTextView;
 import com.ybdev.digitaltwin.R;
 import com.ybdev.digitaltwin.items.objects.Apartment;
 import com.ybdev.digitaltwin.items.objects.Building;
@@ -40,7 +41,9 @@ public class ApartmentAdapter extends RecyclerView.Adapter<ApartmentAdapter.View
     public void onBindViewHolder(@NonNull ApartmentAdapter.ViewHolder holder, int position) {
         Apartment temps = items.get(position);
         if(holder != null){
-
+            holder.project_LBL_name.setText("Id "+ temps.getID());
+            holder.project_LBL_name2.setText("Num room" +temps.getNumOfRooms());
+            holder.project_LBL_name3.setText("Price :"+temps.getPrice());
         }
     }
 
@@ -50,10 +53,18 @@ public class ApartmentAdapter extends RecyclerView.Adapter<ApartmentAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-
+        private MaterialTextView project_LBL_name;
+        private MaterialTextView project_LBL_name2;
+        private MaterialTextView project_LBL_name3;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            findViews(itemView);
+        }
 
+        private void findViews(View itemView) {
+            project_LBL_name = itemView.findViewById(R.id.project_LBL_name);
+            project_LBL_name2 = itemView.findViewById(R.id.project_LBL_name2);
+            project_LBL_name3 = itemView.findViewById(R.id.project_LBL_name3);
         }
     }
 }

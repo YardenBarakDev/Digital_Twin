@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:gravity="center">
 
@@ -47,11 +48,11 @@
         >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/Apartment_LBL_balcony"
+            android:id="@+id/Apartment_LBL_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Have balcony?"
-            android:inputType="text"
+            android:hint="Price"
+            android:inputType="number"
             android:maxLines="1"
             android:maxLength="35"
             />
@@ -65,17 +66,17 @@
         android:layout_marginEnd="25dp"
         android:layout_marginStart="25dp"
         android:layout_marginBottom="15sp"
+        app:helperText="EAST, WEST, NORTH, SOUTH"
         >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/Apartment_LBL_showers"
+            android:id="@+id/Apartment_LBL_oriantation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Number of showers"
+            android:hint="Oriantation"
             android:inputType="number"
             android:maxLines="1"
-            android:maxLength="3"
-
+            android:maxLength="5"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -97,7 +98,7 @@
             android:hint="Number of rooms"
             android:inputType="number"
             android:maxLines="1"
-            android:maxLength="3"
+            android:maxLength="1"
             />
 
     </com.google.android.material.textfield.TextInputLayout>

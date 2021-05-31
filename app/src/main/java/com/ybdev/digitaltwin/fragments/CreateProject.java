@@ -13,8 +13,19 @@ import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.gson.Gson;
 import com.ybdev.digitaltwin.R;
+import com.ybdev.digitaltwin.items.objects.Building;
 import com.ybdev.digitaltwin.items.objects.ConstructionProject;
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 
 public class CreateProject extends Fragment {
@@ -66,6 +77,63 @@ public class CreateProject extends Fragment {
     }
 
     private void postToDataBase(ConstructionProject c) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                postInfoToDb(c);
+            }
+        }).start();
+    }
+
+    private void postInfoToDb(ConstructionProject c) {
+        String url = "http://192.168.1.202:8042/twins/items/2021b.vadim.kandorov/dima@notfound.com";
+
+        OkHttpClient okHttpClient = new OkHttpClient();
+
+        Gson gson = new Gson();
+
+        String details = gson.toJson(c);
+
+        Log.d(TAG, "postInfoToDb: " + details);
+
+        String json = "{\n" +
+                "    \"type\": \"ConstructionProject\",\n" +
+                "    \"name\": \"demo item " + c.getId() + " \",\n" +
+                "    \"active\": true,\n" +
+                "    \"createdTimestamp\": \"2021-05-20T10:42:23.995+00:00\",\n" +
+                "    \"createdBy\": {\n" +
+                "        \"userId\": {\n" +
+                "            \"space\": \"2021b.vadim.kandorov\",\n" +
+                "            \"email\": \"dima@notfound.com\"\n" +
+                "        }\n" +
+                "    },\n" +
+                "    \"location\": {\n" +
+                "\"lat\":32.115139,\n" +
+                "\"lng\":34.817804\n" +
+                "},\n" +
+                "    \"itemAttributes\":" + details + ",\n" +
+                "    \"itemId\": {\n" +
+                "        \"space\": \"2021b.vadim.kandorov\",\n" +
+                "        \"id\": \"1\"\n" +
+                "    }\n" +
+                "}";
+
+        RequestBody body = RequestBody.create(
+                MediaType.parse("application/json"), json);
+
+        Request request2 = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+
+        Call call = okHttpClient.newCall(request2);
+        try {
+            Response response = call.execute();
+            Log.d(TAG, "postInfoToDb: " + response.code());
+        } catch (IOException e) {
+            Log.d(TAG, "postInfoToDb: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
 
