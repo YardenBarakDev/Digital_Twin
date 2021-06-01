@@ -22,13 +22,13 @@ import java.util.ArrayList;
 
 public class ApartmentAdapter extends RecyclerView.Adapter<ApartmentAdapter.ViewHolder> {
 
-    private static final String TAG = "AdapterApartment";
+    private static final String TAG = "AdapterBuilding";
     private Context context;
     private ArrayList<Apartment> items;
     private Fragment fragment;
 
-    public ApartmentAdapter(Context context ,ArrayList<Apartment> items,  Fragment fragment) {
-        Log.d(TAG, "RecyclerViewAdapterApartment: ");
+    public ApartmentAdapter(Context context ,ArrayList<Apartment> items) {
+        Log.d(TAG, "RecyclerViewAdapterBuilding: ");
         this.context = context;
         this.items = items;
         this.fragment = fragment;
@@ -38,7 +38,7 @@ public class ApartmentAdapter extends RecyclerView.Adapter<ApartmentAdapter.View
     @Override
     public ApartmentAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.card_appartment, parent, false);
+        View view = inflater.inflate(R.layout.card_building, parent, false);
         return  new ApartmentAdapter.ViewHolder(view);
 
     }
@@ -73,9 +73,9 @@ public class ApartmentAdapter extends RecyclerView.Adapter<ApartmentAdapter.View
         }
 
         private void findViews(View itemView) {
-            project_LBL_name = itemView.findViewById(R.id.project_LBL_name);
-            project_LBL_name2 = itemView.findViewById(R.id.project_LBL_name2);
-            project_LBL_name3 = itemView.findViewById(R.id.project_LBL_name3);
+            project_LBL_name = itemView.findViewById(R.id.project_apartment_LBL_name);
+            project_LBL_name2 = itemView.findViewById(R.id.project_apartment_LBL_name2);
+            project_LBL_name3 = itemView.findViewById(R.id.project_apartment_LBL_name3);
             apartment_LAY_crd = itemView.findViewById(R.id.apartment_LAY_crd);
         }
     }

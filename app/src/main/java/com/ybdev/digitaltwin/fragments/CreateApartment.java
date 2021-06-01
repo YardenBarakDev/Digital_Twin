@@ -89,27 +89,30 @@ public class CreateApartment extends Fragment {
 
         Log.d(TAG, "postInfoToDb: " + details);
 
-        String json = "{\n" +
-                "    \"type\": \"Apartment\",\n" +
-                "    \"name\": \"demo item " + apartment.getID() + " \",\n" +
-                "    \"active\": true,\n" +
-                "    \"createdTimestamp\": \"2021-05-20T10:42:23.995+00:00\",\n" +
-                "    \"createdBy\": {\n" +
-                "        \"userId\": {\n" +
-                "            \"space\": \"2021b.vadim.kandorov\",\n" +
-                "            \"email\": \"dima@notfound.com\"\n" +
-                "        }\n" +
-                "    },\n" +
-                "    \"location\": {\n" +
-                "\"lat\":32.115139,\n" +
-                "\"lng\":34.817804\n" +
-                "},\n" +
-                "    \"itemAttributes\":" + details + ",\n" +
-                "    \"itemId\": {\n" +
-                "        \"space\": \"2021b.vadim.kandorov\",\n" +
-                "        \"id\": \"1\"\n" +
-                "    }\n" +
-                "}";
+        String json = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            json = "{\n" +
+                    "    \"type\": \"Apartment\",\n" +
+                    "    \"name\": \"demo item " + apartment.getID() + " \",\n" +
+                    "    \"active\": true,\n" +
+                    "    \"createdTimestamp\": \""+java.time.LocalDateTime.now() +"\",\n" +
+                    "    \"createdBy\": {\n" +
+                    "        \"userId\": {\n" +
+                    "            \"space\": \"2021b.vadim.kandorov\",\n" +
+                    "            \"email\": \"dima@notfound.com\"\n" +
+                    "        }\n" +
+                    "    },\n" +
+                    "    \"location\": {\n" +
+                    "\"lat\":32.115139,\n" +
+                    "\"lng\":34.817804\n" +
+                    "},\n" +
+                    "    \"itemAttributes\":" + details + ",\n" +
+                    "    \"itemId\": {\n" +
+                    "        \"space\": \"2021b.vadim.kandorov\",\n" +
+                    "        \"id\": \"1\"\n" +
+                    "    }\n" +
+                    "}";
+        }
 
         RequestBody body = RequestBody.create(
                 MediaType.parse("application/json"), json);

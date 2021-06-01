@@ -21,6 +21,7 @@ import com.ybdev.digitaltwin.R;
 import com.ybdev.digitaltwin.items.objects.Apartment;
 import com.ybdev.digitaltwin.items.objects.Building;
 import com.ybdev.digitaltwin.items.objects.ConstructionProject;
+import com.ybdev.digitaltwin.util.MySP;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -65,7 +66,7 @@ public class BuildingList extends Fragment {
     }
 
     private void getInfoFromServer() {
-        String url = "http://192.168.1.202:8042/twins/items/2021b.vadim.kandorov/dima@notfound.com";
+        String url = "http://192.168.1.202:8042/twins/items/2021b.vadim.kandorov/dima@notfound.com/ConstructionProject/"+ MySP.getInstance().getString(MySP.KEYS.PROJECT, "");
 
         OkHttpClient okHttpClient = new OkHttpClient();
         Request request = new Request.Builder()
@@ -104,7 +105,7 @@ public class BuildingList extends Fragment {
                         setAdapter();
                     }
                 });
-                Log.d("jjjj", "onResponse: Got response: " + initialResponse);
+                Log.d(TAG, "onResponse: Got response: " + initialResponse);
             }
 
             @Override
@@ -127,5 +128,11 @@ public class BuildingList extends Fragment {
         Building_Spinner = view.findViewById(R.id.Building_Spinner);
         Building_RecyclerView = view.findViewById(R.id.Building_RecyclerView);
         Building_FAB_create_new_building = view.findViewById(R.id.Building_FAB_create_new_building);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
     }
 }

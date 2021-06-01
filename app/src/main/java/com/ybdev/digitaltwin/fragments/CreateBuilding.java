@@ -21,6 +21,7 @@ import com.ybdev.digitaltwin.items.objects.Facility;
 import com.ybdev.digitaltwin.util.MySP;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -60,9 +61,10 @@ public class CreateBuilding extends Fragment {
                     building.setID(building_LBL_name.getText().toString());
                     building.setNumOfWorkers(Integer.parseInt(building_LBL_apartments.getText().toString()));
                     building.setName(building_LBL_name.getText().toString());
-                    building.setFacilities(null);
+
                     building.setReady(true);
-                    building.setApartments(null);
+                    building.setApartments(new ArrayList<Apartment>());
+                    building.setFacilities(new ArrayList<Facility>());
 
 
                 }catch (Exception e ){
@@ -99,27 +101,30 @@ public class CreateBuilding extends Fragment {
 
         Log.d(TAG, "postInfoToDb: " + details);
 
-        String json = "{\n" +
-                "    \"type\": \"Building\",\n" +
-                "    \"name\": \"demo item " + building.getID() + " \",\n" +
-                "    \"active\": true,\n" +
-                "    \"createdTimestamp\": \"2021-05-20T10:42:23.995+00:00\",\n" +
-                "    \"createdBy\": {\n" +
-                "        \"userId\": {\n" +
-                "            \"space\": \"2021b.vadim.kandorov\",\n" +
-                "            \"email\": \"dima@notfound.com\"\n" +
-                "        }\n" +
-                "    },\n" +
-                "    \"location\": {\n" +
-                "\"lat\":32.115139,\n" +
-                "\"lng\":34.817804\n" +
-                "},\n" +
-                "    \"itemAttributes\":" + details + ",\n" +
-                "    \"itemId\": {\n" +
-                "        \"space\": \"2021b.vadim.kandorov\",\n" +
-                "        \"id\": \"1\"\n" +
-                "    }\n" +
-                "}";
+        String json = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            json = "{\n" +
+                    "    \"type\": \"Building\",\n" +
+                    "    \"name\": \"demo item " + building.getID() + " \",\n" +
+                    "    \"active\": true,\n" +
+                    "    \"createdTimestamp\": \""+java.time.LocalDateTime.now() +"\",\n" +
+                    "    \"createdBy\": {\n" +
+                    "        \"userId\": {\n" +
+                    "            \"space\": \"2021b.vadim.kandorov\",\n" +
+                    "            \"email\": \"dima@notfound.com\"\n" +
+                    "        }\n" +
+                    "    },\n" +
+                    "    \"location\": {\n" +
+                    "\"lat\":32.115139,\n" +
+                    "\"lng\":34.817804\n" +
+                    "},\n" +
+                    "    \"itemAttributes\":" + details + ",\n" +
+                    "    \"itemId\": {\n" +
+                    "        \"space\": \"2021b.vadim.kandorov\",\n" +
+                    "        \"id\": \"1\"\n" +
+                    "    }\n" +
+                    "}";
+        }
 
         RequestBody body = RequestBody.create(
                 MediaType.parse("application/json"), json);

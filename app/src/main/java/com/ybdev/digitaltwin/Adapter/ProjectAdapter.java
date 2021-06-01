@@ -58,7 +58,6 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
                 NavHostFragment.findNavController(fragment).navigate(R.id.action_projectList_to_buildingList);
             });
         }
-
     }
 
     @Override

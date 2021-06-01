@@ -19,6 +19,8 @@ import com.ybdev.digitaltwin.items.objects.Building;
 import com.ybdev.digitaltwin.items.objects.ConstructionProject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.UUID;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -60,9 +62,10 @@ public class CreateProject extends Fragment {
                     c.setLon(Double.parseDouble(loc[0]));
                     c.setLat(Double.parseDouble(loc[1]));
                     c.setName(Project_LBL_name.getText().toString());
-
+                    c.setId(UUID.randomUUID().toString());
+                    c.setBuildings(new ArrayList<Building>());
                     postToDataBase(c); // TODO : add method post to server
-
+                    Toast.makeText(getContext(), "project created successfully", Toast.LENGTH_SHORT).show();
                     NavHostFragment.findNavController(CreateProject.this).navigate(R.id.action_createProject_to_projectList);
                 }catch (Exception e){
                     Log.d(TAG, "onClick: "+ e.getMessage());
@@ -96,27 +99,30 @@ public class CreateProject extends Fragment {
 
         Log.d(TAG, "postInfoToDb: " + details);
 
-        String json = "{\n" +
-                "    \"type\": \"ConstructionProject\",\n" +
-                "    \"name\": \"demo item " + c.getId() + " \",\n" +
-                "    \"active\": true,\n" +
-                "    \"createdTimestamp\": \"2021-05-20T10:42:23.995+00:00\",\n" +
-                "    \"createdBy\": {\n" +
-                "        \"userId\": {\n" +
-                "            \"space\": \"2021b.vadim.kandorov\",\n" +
-                "            \"email\": \"dima@notfound.com\"\n" +
-                "        }\n" +
-                "    },\n" +
-                "    \"location\": {\n" +
-                "\"lat\":32.115139,\n" +
-                "\"lng\":34.817804\n" +
-                "},\n" +
-                "    \"itemAttributes\":" + details + ",\n" +
-                "    \"itemId\": {\n" +
-                "        \"space\": \"2021b.vadim.kandorov\",\n" +
-                "        \"id\": \"1\"\n" +
-                "    }\n" +
-                "}";
+        String json = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            json = "{\n" +
+                    "    \"type\": \"ConstructionProject\",\n" +
+                    "    \"name\": \"demo item " + c.getId() + " \",\n" +
+                    "    \"active\": true,\n" +
+                    "    \"createdTimestamp\": \""+java.time.LocalDateTime.now() +" \",\n" +
+                    "    \"createdBy\": {\n" +
+                    "        \"userId\": {\n" +
+                    "            \"space\": \"2021b.vadim.kandorov\",\n" +
+                    "            \"email\": \"dima@notfound.com\"\n" +
+                    "        }\n" +
+                    "    },\n" +
+                    "    \"location\": {\n" +
+                    "\"lat\":"+c.getLat()+",\n" +
+                    "\"lng\":"+c.getLon()+"\n" +
+                    "},\n" +
+                    "    \"itemAttributes\":" + details + ",\n" +
+                    "    \"itemId\": {\n" +
+                    "        \"space\": \"2021b.vadim.kandorov\",\n" +
+                    "        \"id\": \"1\"\n" +
+                    "    }\n" +
+                    "}";
+        }
 
         RequestBody body = RequestBody.create(
                 MediaType.parse("application/json"), json);

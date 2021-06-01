@@ -67,7 +67,7 @@ public class ProjectList extends Fragment {
     }
 
     private void getInfoFromServer() {
-        String url = "http://192.168.1.202:8042/twins/items/2021b.vadim.kandorov/dima@notfound.com";
+        String url = "http://192.168.1.202:8042/twins/items/2021b.vadim.kandorov/dima@notfound.com/?page=0&size=50";
 
         OkHttpClient okHttpClient = new OkHttpClient();
         Request request = new Request.Builder()
