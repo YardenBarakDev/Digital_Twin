@@ -144,6 +144,5 @@ public class CreateProject extends Fragment {
         Project_LBL_endDate = view.findViewById(R.id.Project_LBL_endDate);
         Project_LBL_location = view.findViewById(R.id.Project_LBL_location);
         Project_BTN_register = view.findViewById(R.id.Project_BTN_register);
-
     }
 }

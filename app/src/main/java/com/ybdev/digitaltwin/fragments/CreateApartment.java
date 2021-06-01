@@ -14,6 +14,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.ybdev.digitaltwin.R;
 import com.ybdev.digitaltwin.items.objects.Apartment;
+import com.ybdev.digitaltwin.util.MySP;
 
 import java.io.IOException;
 import java.util.Random;
@@ -34,7 +35,8 @@ public class CreateApartment extends Fragment {
     private TextInputEditText Apartment_LBL_oriantation;
     private TextInputEditText Apartment_LBL_rooms;
     private MaterialButton Apartment_BTN_createApartment;
-
+    private String projectID;
+    private String buildingID;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,6 +46,9 @@ public class CreateApartment extends Fragment {
 
         //find all views
         findViews();
+
+        projectID = MySP.getInstance().getString(MySP.KEYS.PROJECT, "");
+        buildingID = MySP.getInstance().getString(MySP.KEYS.BUILDING, "");
 
         // listener. create new room
         Apartment_BTN_createApartment.setOnClickListener(view -> {

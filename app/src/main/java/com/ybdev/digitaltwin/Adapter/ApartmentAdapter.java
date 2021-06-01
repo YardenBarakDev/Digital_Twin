@@ -7,32 +7,38 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
 import com.ybdev.digitaltwin.R;
 import com.ybdev.digitaltwin.items.objects.Apartment;
 import com.ybdev.digitaltwin.items.objects.Building;
+import com.ybdev.digitaltwin.util.MySP;
 
 import java.util.ArrayList;
 
 public class ApartmentAdapter extends RecyclerView.Adapter<ApartmentAdapter.ViewHolder> {
 
-    private static final String TAG = "AdapterBuilding";
+    private static final String TAG = "AdapterApartment";
     private Context context;
     private ArrayList<Apartment> items;
+    private Fragment fragment;
 
-    public ApartmentAdapter(Context context ,ArrayList<Apartment> items) {
-        Log.d(TAG, "RecyclerViewAdapterBuilding: ");
+    public ApartmentAdapter(Context context ,ArrayList<Apartment> items,  Fragment fragment) {
+        Log.d(TAG, "RecyclerViewAdapterApartment: ");
         this.context = context;
         this.items = items;
+        this.fragment = fragment;
     }
 
     @NonNull
     @Override
     public ApartmentAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.card_building, parent, false);
+        View view = inflater.inflate(R.layout.card_appartment, parent, false);
         return  new ApartmentAdapter.ViewHolder(view);
 
     }
@@ -44,6 +50,10 @@ public class ApartmentAdapter extends RecyclerView.Adapter<ApartmentAdapter.View
             holder.project_LBL_name.setText("Id "+ temps.getID());
             holder.project_LBL_name2.setText("Num room" +temps.getNumOfRooms());
             holder.project_LBL_name3.setText("Price :"+temps.getPrice());
+            holder.apartment_LAY_crd.setOnClickListener(view -> {
+                MySP.getInstance().putString(MySP.KEYS.APARTMENT,temps.getID());
+                NavHostFragment.findNavController(fragment).navigate(R.id.action_apartmentList_to_createApartment);
+            });
         }
     }
 
@@ -56,6 +66,7 @@ public class ApartmentAdapter extends RecyclerView.Adapter<ApartmentAdapter.View
         private MaterialTextView project_LBL_name;
         private MaterialTextView project_LBL_name2;
         private MaterialTextView project_LBL_name3;
+        private MaterialCardView apartment_LAY_crd;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             findViews(itemView);
@@ -65,6 +76,7 @@ public class ApartmentAdapter extends RecyclerView.Adapter<ApartmentAdapter.View
             project_LBL_name = itemView.findViewById(R.id.project_LBL_name);
             project_LBL_name2 = itemView.findViewById(R.id.project_LBL_name2);
             project_LBL_name3 = itemView.findViewById(R.id.project_LBL_name3);
+            apartment_LAY_crd = itemView.findViewById(R.id.apartment_LAY_crd);
         }
     }
 }

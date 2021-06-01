@@ -16,6 +16,7 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
 import com.ybdev.digitaltwin.R;
 import com.ybdev.digitaltwin.items.objects.Building;
+import com.ybdev.digitaltwin.util.MySP;
 
 import java.util.ArrayList;
 
@@ -49,11 +50,9 @@ public class BuildingAdapter extends RecyclerView.Adapter<BuildingAdapter.ViewHo
             holder.card_building_LBL_name.setText("Id : " +temps.getName());
             holder.card_building_LBL_name2.setText("Total floor : " +temps.getFloor());
             holder.card_building_LBL_name3.setText("Appartment num : "+temps.getNumOfWorkers());
-            holder.building_LAY_crd.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    NavHostFragment.findNavController(fragment).navigate(R.id.action_buildingList_to_apartmentList);
-                }
+            holder.building_LAY_crd.setOnClickListener(view -> {
+                MySP.getInstance().putString(MySP.KEYS.BUILDING,temps.getID());
+                NavHostFragment.findNavController(fragment).navigate(R.id.action_buildingList_to_apartmentList);
             });
         }
     }

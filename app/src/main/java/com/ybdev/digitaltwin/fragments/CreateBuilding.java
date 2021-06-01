@@ -18,6 +18,7 @@ import com.ybdev.digitaltwin.R;
 import com.ybdev.digitaltwin.items.objects.Apartment;
 import com.ybdev.digitaltwin.items.objects.Building;
 import com.ybdev.digitaltwin.items.objects.Facility;
+import com.ybdev.digitaltwin.util.MySP;
 
 import java.io.IOException;
 
@@ -37,6 +38,7 @@ public class CreateBuilding extends Fragment {
     private TextInputEditText building_LBL_floors;
     private TextInputEditText building_LBL_apartments;
     private MaterialButton    building_BTN_createBuilding;
+    private String projectID;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,6 +47,7 @@ public class CreateBuilding extends Fragment {
             view = inflater.inflate(R.layout.create_building, container, false);
         }
 
+        projectID = MySP.getInstance().getString(MySP.KEYS.PROJECT, "");
         findViews(view);
 
         building_BTN_createBuilding.setOnClickListener(new View.OnClickListener() {

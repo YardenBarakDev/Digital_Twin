@@ -6,15 +6,24 @@ public class User {
     private String email;
     private String role;
     private String password;
-
+    private String avatar;
     public User() {
     }
 
-    public User(String userName, String email, String role, String password) {
+    public User(String userName, String email, String role, String password, String avatar) {
         this.userName = userName;
         this.email = email;
         this.role = role;
         this.password = password;
+        this.avatar = avatar;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public String getUserName() {

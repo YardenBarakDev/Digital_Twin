@@ -17,6 +17,7 @@ import com.ybdev.digitaltwin.R;
 import com.ybdev.digitaltwin.fragments.ProjectList;
 import com.ybdev.digitaltwin.items.objects.Building;
 import com.ybdev.digitaltwin.items.objects.ConstructionProject;
+import com.ybdev.digitaltwin.util.MySP;
 
 import java.util.ArrayList;
 
@@ -52,9 +53,12 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
             holder.project_LBL_name2.setText("Start :" + temps.getStartDate());
             holder.project_LBL_name3.setText("End : "+ temps.getDueDate());
             holder.project_LBL_name4.setText("Loctation : "+ temps.getLat() +" , " + temps.getLon());
-            holder.project_LAY_crd.setOnClickListener(v ->
-                    NavHostFragment.findNavController(fragment).navigate(R.id.action_projectList_to_buildingList));
+            holder.project_LAY_crd.setOnClickListener(view -> {
+                MySP.getInstance().putString(MySP.KEYS.PROJECT,temps.getId());
+                NavHostFragment.findNavController(fragment).navigate(R.id.action_projectList_to_buildingList);
+            });
         }
+
     }
 
     @Override
