@@ -5,11 +5,20 @@ public class Apartment {
 	public enum apartmentOrientation {
 		EAST, WEST, NORTH, SOUTH
 	}
-
+	private String parentID;
 	private String ID;
 	private boolean isVilla;
 	private Double length;
 	private Double width;
+
+	public String getParentID() {
+		return parentID;
+	}
+
+	public void setParentID(String parentID) {
+		parentID = parentID;
+	}
+
 	private Double height;
 	private int numOfRooms;
 	private Double price;
@@ -27,11 +36,12 @@ public class Apartment {
 	}
 	
 	
-	public Apartment(String iD, boolean isVilla, Double length, Double width, Double height, int numOfRooms,
+	public Apartment(String iD, String parentID,boolean isVilla, Double length, Double width, Double height, int numOfRooms,
 			Double price, int numOfShowers, int numOfToilets, boolean haveBalcony, boolean haveSeaView,
 			apartmentOrientation orientation, boolean isCentralAirCon, boolean haveChimney, boolean isApartmentReady) {
 		super();
 		ID = iD;
+		this.parentID=parentID;
 		this.isVilla = isVilla;
 		this.length = length;
 		this.width = width;

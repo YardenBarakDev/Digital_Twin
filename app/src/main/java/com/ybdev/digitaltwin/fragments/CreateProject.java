@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import com.ybdev.digitaltwin.R;
 import com.ybdev.digitaltwin.items.objects.Building;
 import com.ybdev.digitaltwin.items.objects.ConstructionProject;
+import com.ybdev.digitaltwin.util.MySP;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,12 +39,15 @@ public class CreateProject extends Fragment {
     private TextInputEditText Project_LBL_startDate;
     private TextInputEditText Project_LBL_endDate;
     private TextInputEditText Project_LBL_location;
-    private MaterialButton    Project_BTN_register;
+    private MaterialButton Project_BTN_register;
+
+    private String userEmail = MySP.getInstance().getString(MySP.KEYS.USER_EMAIL, "");
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if(view == null){
+        if (view == null) {
             view = inflater.inflate(R.layout.create_project, container, false);
         }
         findViews(view);
@@ -66,13 +70,12 @@ public class CreateProject extends Fragment {
                     c.setBuildings(new ArrayList<Building>());
                     postToDataBase(c); // TODO : add method post to server
                     Toast.makeText(getContext(), "project created successfully", Toast.LENGTH_SHORT).show();
-                    NavHostFragment.findNavController(CreateProject.this).navigate(R.id.action_createProject_to_projectList);
-                }catch (Exception e){
-                    Log.d(TAG, "onClick: "+ e.getMessage());
+                } catch (Exception e) {
+                    Log.d(TAG, "onClick: " + e.getMessage());
                     Toast.makeText(getContext(), "Please enter correct project", Toast.LENGTH_SHORT).show();
                 }
 
-                Log.d("CreateProject", "onClick: "+c.toString());
+                Log.d("CreateProject", "onClick: " + c.toString());
             }
         });
 
@@ -89,7 +92,7 @@ public class CreateProject extends Fragment {
     }
 
     private void postInfoToDb(ConstructionProject c) {
-        String url = "http://192.168.1.202:8042/twins/items/2021b.vadim.kandorov/dima@notfound.com";
+        String url = "http://192.168.43.243:8042/twins/items/2021b.vadim.kandorov/Vadix3@gmail.com";
 
         OkHttpClient okHttpClient = new OkHttpClient();
 
@@ -105,21 +108,21 @@ public class CreateProject extends Fragment {
                     "    \"type\": \"ConstructionProject\",\n" +
                     "    \"name\": \"demo item " + c.getId() + " \",\n" +
                     "    \"active\": true,\n" +
-                    "    \"createdTimestamp\": \""+java.time.LocalDateTime.now() +" \",\n" +
+                    "    \"createdTimestamp\": \"" + java.time.LocalDateTime.now() + " \",\n" +
                     "    \"createdBy\": {\n" +
                     "        \"userId\": {\n" +
                     "            \"space\": \"2021b.vadim.kandorov\",\n" +
-                    "            \"email\": \"dima@notfound.com\"\n" +
+                    "            \"email\": \"" + userEmail + "\"\n" +
                     "        }\n" +
                     "    },\n" +
                     "    \"location\": {\n" +
-                    "\"lat\":"+c.getLat()+",\n" +
-                    "\"lng\":"+c.getLon()+"\n" +
+                    "\"lat\":" + c.getLat() + ",\n" +
+                    "\"lng\":" + c.getLon() + "\n" +
                     "},\n" +
                     "    \"itemAttributes\":" + details + ",\n" +
                     "    \"itemId\": {\n" +
                     "        \"space\": \"2021b.vadim.kandorov\",\n" +
-                    "        \"id\": \"1\"\n" +
+                    "        \"id\": \"" + c.getId()+"" + "\"\n" +
                     "    }\n" +
                     "}";
         }
@@ -136,10 +139,23 @@ public class CreateProject extends Fragment {
         try {
             Response response = call.execute();
             Log.d(TAG, "postInfoToDb: " + response.code());
+            //If all good I'm here
+            returnToProjectList();
         } catch (IOException e) {
             Log.d(TAG, "postInfoToDb: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    private void returnToProjectList() {
+        Log.d(TAG, "refreshUi: ");
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                NavHostFragment.findNavController(CreateProject.this).navigate(R.id.action_createProject_to_projectList);
+
+            }
+        });
     }
 
 

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.gson.Gson;
 import com.ybdev.digitaltwin.R;
 import com.ybdev.digitaltwin.fragments.ProjectList;
 import com.ybdev.digitaltwin.items.objects.Building;
@@ -54,7 +55,9 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
             holder.project_LBL_name3.setText("End : "+ temps.getDueDate());
             holder.project_LBL_name4.setText("Loctation : "+ temps.getLat() +" , " + temps.getLon());
             holder.project_LAY_crd.setOnClickListener(view -> {
-                MySP.getInstance().putString(MySP.KEYS.PROJECT,temps.getId());
+                Gson gson = new Gson();
+                String projectString = gson.toJson(temps);// Store the project in Json
+                MySP.getInstance().putString(MySP.KEYS.PROJECT,projectString);
                 NavHostFragment.findNavController(fragment).navigate(R.id.action_projectList_to_buildingList);
             });
         }

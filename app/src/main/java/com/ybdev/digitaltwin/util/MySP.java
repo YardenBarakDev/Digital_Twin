@@ -10,6 +10,10 @@ public class MySP {
         String BUILDING = "BUILDING";
         String APARTMENT = "APARTMENT";
         String ROOM = "ROOM";
+        String USER_EMAIL = "USER_EMAIL";
+        String PARENT_BUILDING = "PARENT_BUILDING";
+
+
     }
 
     private static MySP instance;

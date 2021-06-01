@@ -3,6 +3,7 @@ package com.ybdev.digitaltwin.items.objects;
 import java.util.ArrayList;
 
 public class Building {
+	//private String ParentID
 	private String ID;
 	private String Name;
 	private ArrayList<Facility> facilities;

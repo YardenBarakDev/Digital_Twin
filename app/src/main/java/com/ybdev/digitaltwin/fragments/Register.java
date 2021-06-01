@@ -18,6 +18,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.ybdev.digitaltwin.R;
 import com.ybdev.digitaltwin.items.objects.User;
+import com.ybdev.digitaltwin.util.MySP;
 
 import java.io.IOException;
 
@@ -88,9 +89,10 @@ public class Register extends Fragment {
     }
 
     private void postInfoToDb(User user){
-        String url = "http://192.168.1.202:8042/twins/users";
+        String url = "http://192.168.43.243:8042/twins/users";
 
         OkHttpClient okHttpClient = new OkHttpClient();
+        MySP.getInstance().putString(MySP.KEYS.USER_EMAIL, user.getEmail());
 
 
         String json = "{" +

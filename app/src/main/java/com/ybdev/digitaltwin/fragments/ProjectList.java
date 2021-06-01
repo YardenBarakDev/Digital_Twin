@@ -18,6 +18,7 @@ import com.ybdev.digitaltwin.Adapter.ProjectAdapter;
 import com.ybdev.digitaltwin.R;
 import com.ybdev.digitaltwin.items.objects.Building;
 import com.ybdev.digitaltwin.items.objects.ConstructionProject;
+import com.ybdev.digitaltwin.util.MySP;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -36,16 +37,19 @@ import okhttp3.Response;
 
 public class ProjectList extends Fragment {
     private static final String TAG = "ProjectList";
-    protected View view ;
+    protected View view;
     private FloatingActionButton project_FAB_create_new_building;
     private RecyclerView project_RecyclerView;
     private ArrayList<ConstructionProject> allProject;
+
+    private String userEmail = MySP.getInstance().getString(MySP.KEYS.USER_EMAIL, "");
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        if(view == null){
+        if (view == null) {
             view = inflater.inflate(R.layout.project_lists, container, false);
         }
         findViews(view);
@@ -60,14 +64,15 @@ public class ProjectList extends Fragment {
     }
 
     private void setAdapter() {
-        ProjectAdapter projectAdapter = new ProjectAdapter(getContext() , allProject , this);
+        ProjectAdapter projectAdapter = new ProjectAdapter(getContext(), allProject, this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         project_RecyclerView.setLayoutManager(linearLayoutManager);
         project_RecyclerView.setAdapter(projectAdapter);
     }
 
     private void getInfoFromServer() {
-        String url = "http://192.168.1.202:8042/twins/items/2021b.vadim.kandorov/dima@notfound.com/?page=0&size=50";
+        String url = "http://192.168.43.243:8042/twins/items/2021b.vadim.kandorov/"
+                + userEmail + "/?page=0&size=50";
 
         OkHttpClient okHttpClient = new OkHttpClient();
         Request request = new Request.Builder()
@@ -82,27 +87,27 @@ public class ProjectList extends Fragment {
                 try {
                     JSONArray jsonArray = new JSONArray(initialResponse);
 
-                    Log.d(TAG, "onResponse: "+jsonArray.length());
+                    Log.d(TAG, "onResponse: " + jsonArray.length());
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        String  itemAttributes = jsonObject.get("type").toString();
-                        if(itemAttributes.equals("ConstructionProject")){
+                        String itemAttributes = jsonObject.get("type").toString();
+                        if (itemAttributes.equals("ConstructionProject")) {
                             JSONObject itemobj = (JSONObject) jsonObject.get("itemAttributes");
                             ConstructionProject constructionProject = gson.fromJson(String.valueOf(itemobj), ConstructionProject.class);
                             allProject.add(constructionProject);
                         }
-                        Log.d(TAG, "onResponse:" + itemAttributes.toString() );
+                        Log.d(TAG, "onResponse:" + itemAttributes.toString());
                     }
 
                 } catch (JSONException e) {
-                    Log.d(TAG, "onResponse: faild "+e.getMessage());
+                    Log.d(TAG, "onResponse: faild " + e.getMessage());
                     e.printStackTrace();
                 }
 
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Log.d(TAG, "run: "+allProject.toString());
+                        Log.d(TAG, "run: " + allProject.toString());
                         setAdapter();
                     }
                 });

@@ -51,7 +51,7 @@ public class BuildingAdapter extends RecyclerView.Adapter<BuildingAdapter.ViewHo
             holder.card_building_LBL_name2.setText("Total floor : " +temps.getFloor());
             holder.card_building_LBL_name3.setText("Appartment num : "+temps.getNumOfWorkers());
             holder.building_LAY_crd.setOnClickListener(view -> {
-                MySP.getInstance().putString(MySP.KEYS.BUILDING,temps.getID());
+                MySP.getInstance().putString(MySP.KEYS.PARENT_BUILDING,temps.getID());
                 NavHostFragment.findNavController(fragment).navigate(R.id.action_buildingList_to_apartmentList);
             });
         }

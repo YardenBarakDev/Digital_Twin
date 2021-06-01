@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import com.ybdev.digitaltwin.R;
 import com.ybdev.digitaltwin.items.objects.Apartment;
 import com.ybdev.digitaltwin.items.objects.Building;
+import com.ybdev.digitaltwin.items.objects.ConstructionProject;
 import com.ybdev.digitaltwin.items.objects.Facility;
 import com.ybdev.digitaltwin.util.MySP;
 
@@ -38,17 +39,26 @@ public class CreateBuilding extends Fragment {
     private TextInputEditText building_LBL_address;
     private TextInputEditText building_LBL_floors;
     private TextInputEditText building_LBL_apartments;
-    private MaterialButton    building_BTN_createBuilding;
-    private String projectID;
+    private MaterialButton building_BTN_createBuilding;
+    private String itemSpace = "2021b.vadim.kandorov";
+
+    private String userEmail = MySP.getInstance().getString(MySP.KEYS.USER_EMAIL, "");
+
+    private ConstructionProject project;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if (view == null){
+        if (view == null) {
             view = inflater.inflate(R.layout.create_building, container, false);
         }
 
-        projectID = MySP.getInstance().getString(MySP.KEYS.PROJECT, "");
+        String projectString = MySP.getInstance().getString(MySP.KEYS.PROJECT, "");
+        project = new Gson().fromJson(projectString, ConstructionProject.class);
+
+        Log.d(TAG, "onCreateView: Got project: " + project.toString());
+
         findViews(view);
 
         building_BTN_createBuilding.setOnClickListener(new View.OnClickListener() {
@@ -56,62 +66,70 @@ public class CreateBuilding extends Fragment {
             public void onClick(View v) {
                 Building building = new Building();
                 try {
-
                     building.setFloor(Integer.parseInt(building_LBL_floors.getText().toString()));
                     building.setID(building_LBL_name.getText().toString());
                     building.setNumOfWorkers(Integer.parseInt(building_LBL_apartments.getText().toString()));
                     building.setName(building_LBL_name.getText().toString());
-
                     building.setReady(true);
                     building.setApartments(new ArrayList<Apartment>());
                     building.setFacilities(new ArrayList<Facility>());
-
-
-                }catch (Exception e ){
-                    Log.d(TAG, "onClick: "+ e.getMessage());
+                } catch (Exception e) {
+                    Log.d(TAG, "onClick: " + e.getMessage());
                     Toast.makeText(getContext(), "Please enter correct building", Toast.LENGTH_SHORT).show();
                 }
-
-                postBuilding(building); //TODO : add post method
-
-                NavHostFragment.findNavController(CreateBuilding.this).navigate(R.id.action_createBuilding_to_buildingList);
+                addBuildingToProject(building);
             }
         });
 
         return view;
     }
 
-    private void postBuilding(Building building) {
+
+    private void addBuildingToProject(Building building) {
+        Log.d(TAG, "addBuildingToProject: Got building: " + building.toString());
+        project.getBuildings().add(building);
+
+        //Update project inside SP with new building added
+        Gson gson = new Gson();
+        String projectString = gson.toJson(project);// Store the project in Json
+        MySP.getInstance().putString(MySP.KEYS.PROJECT, projectString);
+
+
         new Thread(new Runnable() {
             @Override
             public void run() {
-                postInfoToDb(building);
+                updateProjectInDB();
             }
         }).start();
     }
 
-    private void postInfoToDb(Building building) {
-        String url = "http://192.168.1.202:8042/twins/items/2021b.vadim.kandorov/dima@notfound.com";
+
+    private void updateProjectInDB() {
+
+        //  /twins/items/{userSpace}/{userEmail}/{itemSpace}/{itemId}
+
+        String url = "http://192.168.43.243:8042/twins/items/2021b.vadim.kandorov/vadix3@gmail.com/" +
+                project.getId() + "/" + itemSpace;
+
+        Log.d(TAG, "updateProjectInDB: URL = "+url);
 
         OkHttpClient okHttpClient = new OkHttpClient();
-
         Gson gson = new Gson();
-
-        String details = gson.toJson(building);
+        String details = gson.toJson(project);
 
         Log.d(TAG, "postInfoToDb: " + details);
 
         String json = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             json = "{\n" +
-                    "    \"type\": \"Building\",\n" +
-                    "    \"name\": \"demo item " + building.getID() + " \",\n" +
+                    "    \"type\": \"ConstructionProject\",\n" +
+                    "    \"name\": \"demo item " + project.getId() + " \",\n" +
                     "    \"active\": true,\n" +
-                    "    \"createdTimestamp\": \""+java.time.LocalDateTime.now() +"\",\n" +
+                    "    \"createdTimestamp\": \"" + java.time.LocalDateTime.now() + "\",\n" +
                     "    \"createdBy\": {\n" +
                     "        \"userId\": {\n" +
                     "            \"space\": \"2021b.vadim.kandorov\",\n" +
-                    "            \"email\": \"dima@notfound.com\"\n" +
+                    "            \"email\": \"" + userEmail + "\"\n" +
                     "        }\n" +
                     "    },\n" +
                     "    \"location\": {\n" +
@@ -131,27 +149,39 @@ public class CreateBuilding extends Fragment {
 
         Request request2 = new Request.Builder()
                 .url(url)
-                .post(body)
+                .put(body)
                 .build();
 
         Call call = okHttpClient.newCall(request2);
         try {
             Response response = call.execute();
+
             Log.d(TAG, "postInfoToDb: " + response.code());
+            //Probably 200 here so continue from here
+
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getContext(), "Building Added Successfully!", Toast.LENGTH_SHORT).show();
+                    goBackToBuildingList();
+                }
+            });
         } catch (IOException e) {
             Log.d(TAG, "postInfoToDb: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
-    private void findViews(View view) {
+    private void goBackToBuildingList() {
+        Log.d(TAG, "refreshUI: ");
+        NavHostFragment.findNavController(CreateBuilding.this).navigate(R.id.action_createBuilding_to_buildingList);
+    }
 
+    private void findViews(View view) {
         building_LBL_name = view.findViewById(R.id.building_LBL_name);
         building_LBL_address = view.findViewById(R.id.building_LBL_address);
         building_LBL_floors = view.findViewById(R.id.building_LBL_floors);
         building_LBL_apartments = view.findViewById(R.id.building_LBL_apartments);
         building_BTN_createBuilding = view.findViewById(R.id.building_BTN_createBuilding);
-
-
     }
 }
