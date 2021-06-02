@@ -27,7 +27,7 @@ public class ApartmentAdapter extends RecyclerView.Adapter<ApartmentAdapter.View
     private ArrayList<Apartment> items;
     private Fragment fragment;
 
-    public ApartmentAdapter(Context context ,ArrayList<Apartment> items) {
+    public ApartmentAdapter(Context context ,ArrayList<Apartment> items,Fragment fragment) {
         Log.d(TAG, "RecyclerViewAdapterBuilding: ");
         this.context = context;
         this.items = items;
@@ -38,7 +38,7 @@ public class ApartmentAdapter extends RecyclerView.Adapter<ApartmentAdapter.View
     @Override
     public ApartmentAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.card_building, parent, false);
+        View view = inflater.inflate(R.layout.card_appartment, parent, false);
         return  new ApartmentAdapter.ViewHolder(view);
 
     }

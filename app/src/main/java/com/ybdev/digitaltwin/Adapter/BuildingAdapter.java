@@ -46,6 +46,7 @@ public class BuildingAdapter extends RecyclerView.Adapter<BuildingAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull BuildingAdapter.ViewHolder holder, int position) {
         Building temps = items.get(position);
+        Log.d(TAG, "onBindViewHolder: "+temps.toString());
         if(holder != null){
             holder.card_building_LBL_name.setText("Id : " +temps.getName());
             holder.card_building_LBL_name2.setText("Total floor : " +temps.getFloor());

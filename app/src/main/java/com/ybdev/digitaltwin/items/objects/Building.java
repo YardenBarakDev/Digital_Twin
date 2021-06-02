@@ -3,7 +3,7 @@ package com.ybdev.digitaltwin.items.objects;
 import java.util.ArrayList;
 
 public class Building {
-	//private String ParentID
+	private String parentID;
 	private String ID;
 	private String Name;
 	private ArrayList<Facility> facilities;
@@ -12,14 +12,23 @@ public class Building {
 	private int floor;
 	private int numOfWorkers;
 
+	public String getParentID() {
+		return parentID;
+	}
+
+	public void setParentID(String parentID) {
+		this.parentID = parentID;
+	}
+
 	public Building() {
 		// Empty constructor
 	}
 
-	public Building(String iD, String name, ArrayList<Facility> facilities, boolean isReady, ArrayList<Apartment> apartments,
+	public Building(String iD, String parentID,String name, ArrayList<Facility> facilities, boolean isReady, ArrayList<Apartment> apartments,
 					int floor, int numOfWorkers) {
 		super();
 		ID = iD;
+		this.parentID=parentID;
 		this.Name = name;
 		this.facilities = facilities;
 		this.isReady = isReady;

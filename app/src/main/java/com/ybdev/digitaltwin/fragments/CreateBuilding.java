@@ -23,6 +23,7 @@ import com.ybdev.digitaltwin.util.MySP;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -43,6 +44,7 @@ public class CreateBuilding extends Fragment {
     private String itemSpace = "2021b.vadim.kandorov";
 
     private String userEmail = MySP.getInstance().getString(MySP.KEYS.USER_EMAIL, "");
+    private String projectId = MySP.getInstance().getString(MySP.KEYS.PROJECT, "");
 
     private ConstructionProject project;
 
@@ -54,10 +56,10 @@ public class CreateBuilding extends Fragment {
             view = inflater.inflate(R.layout.create_building, container, false);
         }
 
-        String projectString = MySP.getInstance().getString(MySP.KEYS.PROJECT, "");
-        project = new Gson().fromJson(projectString, ConstructionProject.class);
+//        String projectString = MySP.getInstance().getString(MySP.KEYS.PROJECT, "");
+//        project = new Gson().fromJson(projectString, ConstructionProject.class);
 
-        Log.d(TAG, "onCreateView: Got project: " + project.toString());
+//        Log.d(TAG, "onCreateView: Got project: " + project.toString());
 
         findViews(view);
 
@@ -66,8 +68,9 @@ public class CreateBuilding extends Fragment {
             public void onClick(View v) {
                 Building building = new Building();
                 try {
+                    building.setParentID(projectId);
                     building.setFloor(Integer.parseInt(building_LBL_floors.getText().toString()));
-                    building.setID(building_LBL_name.getText().toString());
+                    building.setID(UUID.randomUUID().toString());
                     building.setNumOfWorkers(Integer.parseInt(building_LBL_apartments.getText().toString()));
                     building.setName(building_LBL_name.getText().toString());
                     building.setReady(true);
@@ -77,11 +80,84 @@ public class CreateBuilding extends Fragment {
                     Log.d(TAG, "onClick: " + e.getMessage());
                     Toast.makeText(getContext(), "Please enter correct building", Toast.LENGTH_SHORT).show();
                 }
-                addBuildingToProject(building);
+//                addBuildingToProject(building);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        addBuildingToDB(building);
+                    }
+                }).start();
             }
         });
 
         return view;
+    }
+
+
+    private void addBuildingToDB(Building building) {
+        Log.d(TAG, "addBuildingToDB: " + building.toString());
+        String url = "http://192.168.43.243:8042/twins/items/2021b.vadim.kandorov/" + userEmail;
+
+        OkHttpClient okHttpClient = new OkHttpClient();
+
+        Gson gson = new Gson();
+
+        String details = gson.toJson(building);
+
+        Log.d(TAG, "postInfoToDb: " + details);
+
+        String json = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            json = "{\n" +
+                    "    \"type\": \"Building\",\n" +
+                    "    \"name\": \"Building " + building.getID() + " \",\n" +
+                    "    \"active\": true,\n" +
+                    "    \"createdTimestamp\": \"" + java.time.LocalDateTime.now() + "\",\n" +
+                    "    \"createdBy\": {\n" +
+                    "        \"userId\": {\n" +
+                    "            \"space\": \"2021b.vadim.kandorov\",\n" +
+                    "            \"email\": \"" + userEmail + "\"\n" +
+                    "        }\n" +
+                    "    },\n" +
+                    "    \"location\": {\n" +
+                    "\"lat\":32.115139,\n" +
+                    "\"lng\":34.817804\n" +
+                    "},\n" +
+                    "    \"itemAttributes\":" + details + ",\n" +
+                    "    \"itemId\": {\n" +
+                    "        \"space\": \"2021b.vadim.kandorov\",\n" +
+                    "        \"id\": \"" + building.getID() + "\"\n" +
+                    "    }\n" +
+                    "}";
+        }
+
+        RequestBody body = RequestBody.create(
+                MediaType.parse("application/json"), json);
+
+        Request request2 = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+
+        Call call = okHttpClient.newCall(request2);
+        try {
+            Response response = call.execute();
+            Log.d(TAG, "postInfoToDb: " + response.code());
+
+            //probably 200
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getContext(), "Building Added Successfully!", Toast.LENGTH_SHORT).show();
+                    goBackToBuildingList();
+                }
+            });
+        } catch (IOException e) {
+            Log.d(TAG, "postInfoToDb: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+
     }
 
 
@@ -111,7 +187,7 @@ public class CreateBuilding extends Fragment {
         String url = "http://192.168.43.243:8042/twins/items/2021b.vadim.kandorov/vadix3@gmail.com/" +
                 project.getId() + "/" + itemSpace;
 
-        Log.d(TAG, "updateProjectInDB: URL = "+url);
+        Log.d(TAG, "updateProjectInDB: URL = " + url);
 
         OkHttpClient okHttpClient = new OkHttpClient();
         Gson gson = new Gson();
@@ -159,13 +235,13 @@ public class CreateBuilding extends Fragment {
             Log.d(TAG, "postInfoToDb: " + response.code());
             //Probably 200 here so continue from here
 
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(getContext(), "Building Added Successfully!", Toast.LENGTH_SHORT).show();
-                    goBackToBuildingList();
-                }
-            });
+//            getActivity().runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    Toast.makeText(getContext(), "Building Added Successfully!", Toast.LENGTH_SHORT).show();
+//                    goBackToBuildingList();
+//                }
+//            });
         } catch (IOException e) {
             Log.d(TAG, "postInfoToDb: " + e.getMessage());
             e.printStackTrace();

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
@@ -30,12 +31,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class BuildingList extends Fragment {
@@ -45,7 +49,9 @@ public class BuildingList extends Fragment {
     private Spinner Building_Spinner;
     private RecyclerView Building_RecyclerView;
     private FloatingActionButton Building_FAB_create_new_building;
-    ArrayList<Building> allBuildings;
+    private ArrayList<Building> allBuildings;
+    private String userEmail = MySP.getInstance().getString(MySP.KEYS.USER_EMAIL, "");
+
 
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,18 +60,16 @@ public class BuildingList extends Fragment {
         }
         findViews();
 
-        String projectJson = MySP.getInstance().getString(MySP.KEYS.PROJECT, "");
-        ConstructionProject project = new Gson().fromJson(projectJson, ConstructionProject.class);
+        String desiredId = MySP.getInstance().getString(MySP.KEYS.PROJECT, "projectString");
+        Log.d(TAG, "onCreateView: id: " + desiredId);
 
-        Log.d(TAG, "onCreateView: " + project.toString());
 
-        if (project.getBuildings() == null || project.getBuildings().size() == 0) {
-            Log.d(TAG, "onCreateView: null/empty array");
-            emptyListText.setVisibility(View.VISIBLE);
-        }else{
-            Log.d(TAG, "onCreateView: Array has something");
-            setAdapter(project.getBuildings());
-        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                fetchBuildingsFromServer(desiredId);
+            }
+        }).start();
 
         // click listener. create new building
         Building_FAB_create_new_building.setOnClickListener(view -> {
@@ -77,7 +81,100 @@ public class BuildingList extends Fragment {
         return view;
     }
 
-    private void setAdapter(ArrayList<Building>buildings) {
+
+    private void fetchBuildingsFromServer(String projectId) {
+        Log.d(TAG, "fetchBuildingsFromServer: " + projectId);
+
+        String url = "http://192.168.43.243:8042/twins/operations";
+        OkHttpClient okHttpClient = new OkHttpClient();
+
+        String requestJson = "{\n" +
+                "    \"operationId\": {\n" +
+                "        \"space\": \"2021b.twins\",\n" +
+                "        \"id\": \"451\"\n" +
+                "    },\n" +
+                "    \"type\": \"GET_BUILDINGS\",\n" +
+                "    \"item\": {\n" +
+                "        \"itemId\": {\n" +
+                "            \"space\": \"2021b.vadim.kandorov\",\n" +
+                "            \"id\": \"" + projectId + "\"\n" +
+                "        }\n" +
+                "    },\n" +
+                "    \"createdTimestamp\": \"2021-03-07T09:57:13.109+0000\",\n" +
+                "    \"invokedBy\": {\n" +
+                "        \"userId\": {\n" +
+                "            \"space\": \"2021b.vadim.kandorov\",\n" +
+                "            \"email\": \"Vadix3@gmail.com\"\n" +
+                "        }\n" +
+                "    },\n" +
+                "    \"operationAttributes\": {\n" +
+                "        \"key1\": \"can be set to any value you wish\",\n" +
+                "        \"key2\": {\n" +
+                "            \"key2Subkey1\": \"can be nested json\"\n" +
+                "        }\n" +
+                "    }\n" +
+                "}";
+
+        RequestBody body = RequestBody.create(
+                MediaType.parse("application/json"), requestJson);
+
+        Request request2 = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+
+        Call call = okHttpClient.newCall(request2);
+        try {
+            Response response = call.execute();
+            Log.d(TAG, "postInfoToDb code: " + response.code());
+            String responseBody = response.body().string();
+            Log.d(TAG, "fetchBuildingsFromServer: " + responseBody);
+
+            try {
+
+                allBuildings = new ArrayList<>();
+
+                JSONArray bArray = new JSONArray(responseBody);
+
+                for (int i = 0; i < bArray.length(); i++) {
+
+                    JSONObject temp = (JSONObject) bArray.get(i);
+                    String attr = (String) temp.get("itemAttributes");
+                    Log.d(TAG, "fetchBuildingsFromServer: " + attr);
+
+                    Building tempBuilding = new Gson().fromJson(attr, Building.class);
+                    Log.d(TAG, "fetchBuildingsFromServer: Object = " + tempBuilding.toString());
+
+                    allBuildings.add(tempBuilding);
+                    Log.d(TAG, "fetchBuildingsFromServer: ");
+                }
+
+                for (Building b : allBuildings) {
+                    Log.d(TAG, "fetchBuildingsFromServer: " + b.toString());
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+            //probably 200
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getContext(), "Buildings Fetched Successfully!", Toast.LENGTH_SHORT).show();
+                    setAdapter(allBuildings);
+                }
+            });
+        } catch (IOException e) {
+            Log.d(TAG, "postInfoToDb: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private void setAdapter(ArrayList<Building> buildings) {
         BuildingAdapter buildingAdapter = new BuildingAdapter(getContext(), buildings, this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         Building_RecyclerView.setLayoutManager(linearLayoutManager);

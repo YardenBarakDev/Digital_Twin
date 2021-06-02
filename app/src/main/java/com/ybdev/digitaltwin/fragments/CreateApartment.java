@@ -3,12 +3,14 @@ package com.ybdev.digitaltwin.fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -16,11 +18,9 @@ import com.google.gson.Gson;
 import com.ybdev.digitaltwin.R;
 import com.ybdev.digitaltwin.items.objects.Apartment;
 import com.ybdev.digitaltwin.items.objects.Building;
-import com.ybdev.digitaltwin.items.objects.ConstructionProject;
 import com.ybdev.digitaltwin.util.MySP;
 
 import java.io.IOException;
-import java.util.Random;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -86,10 +86,10 @@ public class CreateApartment extends Fragment {
     }
 
     private void postAppartement(Apartment apartment) {
-        postInfoToDb(apartment);
+        addApartmentToDB(apartment);
     }
 
-    private void postInfoToDb(Apartment apartment) {
+    private void addApartmentToDB(Apartment apartment) {
         String url = "http://192.168.43.243:8042/twins/items/2021b.vadim.kandorov/" + userEmail;
 
         OkHttpClient okHttpClient = new OkHttpClient();
@@ -104,13 +104,13 @@ public class CreateApartment extends Fragment {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             json = "{\n" +
                     "    \"type\": \"Apartment\",\n" +
-                    "    \"name\": \"demo item " + apartment.getID() + " \",\n" +
+                    "    \"name\": \"Apartment " + apartment.getID() + " \",\n" +
                     "    \"active\": true,\n" +
                     "    \"createdTimestamp\": \"" + java.time.LocalDateTime.now() + "\",\n" +
                     "    \"createdBy\": {\n" +
                     "        \"userId\": {\n" +
                     "            \"space\": \"2021b.vadim.kandorov\",\n" +
-                    "            \"email\": \""+userEmail+"\"\n" +
+                    "            \"email\": \"" + userEmail + "\"\n" +
                     "        }\n" +
                     "    },\n" +
                     "    \"location\": {\n" +
@@ -120,7 +120,7 @@ public class CreateApartment extends Fragment {
                     "    \"itemAttributes\":" + details + ",\n" +
                     "    \"itemId\": {\n" +
                     "        \"space\": \"2021b.vadim.kandorov\",\n" +
-                    "        \"id\": \"1\"\n" +
+                    "        \"id\": \"" + apartment.getID() + "\"\n" +
                     "    }\n" +
                     "}";
         }
@@ -137,10 +137,26 @@ public class CreateApartment extends Fragment {
         try {
             Response response = call.execute();
             Log.d(TAG, "postInfoToDb: " + response.code());
+
+            //probably 200
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getContext(), "Apartment Added Successfully!", Toast.LENGTH_SHORT).show();
+                    goBackToApartmentList();
+                }
+            });
+
         } catch (IOException e) {
             Log.d(TAG, "postInfoToDb: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    private void goBackToApartmentList() {
+        Log.d(TAG, "goBackToApartmentList: ");
+        NavHostFragment.findNavController(CreateApartment.this).navigate(R.id.action_createApartment_to_apartmentList);
+
     }
 
 
